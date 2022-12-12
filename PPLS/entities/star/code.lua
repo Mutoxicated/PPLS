@@ -1,0 +1,28 @@
+function ppls.Entity.STAR(x,y,angle,speed)
+    --regenerate the values so that they are reusable
+    RX,RY = gen.spawn()
+    RANGLE = gen.rangle()
+    local id = ent.new_entity(x,y,{ENT_PATH.."star/mesh.lua",0},16fx,ent.CustomType.STAR)
+    pewpew.customizable_entity_set_position_interpolation(id, true)
+    local ex,ey = 0fx,0fx
+    local move_y,move_x = fmath.sincos(angle)
+    pewpew.entity_set_update_callback(id, function() 
+        ex,ey = pewpew.entity_get_position(id)
+        move_y,move_x = fmath.sincos(angle)
+        pewpew.entity_set_position(id, ex+move_x*speed, ey+move_y*speed)
+        pewpew.customizable_entity_add_rotation_to_mesh(id, 0.409fx, 0fx, 0fx, 1fx)
+    end)
+    pewpew.customizable_entity_set_player_collision_callback(id, function(entity_id, player_index, ship_entity_id)
+        ent.destroy_entity(id,30,function()
+            pewpew.play_sound(ENT_PATH.."star/sfx.lua", 0, ex, ey)
+            pewpew.increase_score_of_player(player_index, 1000)
+            pewpew.create_explosion(ex, ey, WHITE, 1fx, 50)
+        end)
+    end)
+    pewpew.customizable_entity_configure_wall_collision(id, true, function(entity_id, wall_normal_x, wall_normal_y) 
+        local dot_product_move = ((wall_normal_x * move_x) + (wall_normal_y * move_y)) * 2fx; 
+        move_x = move_x - (wall_normal_x * dot_product_move)
+        move_y = move_y - (wall_normal_y * dot_product_move)
+        angle = fmath.atan2(move_y,move_x)
+    end)
+end

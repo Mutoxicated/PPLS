@@ -1,0 +1,147 @@
+-- USING PPLS --
+
+Here's the basic premise of how to use PPLS:
+ppls(base).(structure).(function)()
+
+Examples:
+ppls.Amath.round(8.5)--returns an a rounded number
+
+And if it seems too much to write, there is a better way!
+mat.round(8.5)
+
+Each structure has a shorted version:
+ppls.Amath = mat
+ppls.Entity = ent
+ppls.General = gen 
+ppls.Mesh = gfx
+
+Important things to note:
+ppls.lua is used to add core parts of the level.
+It's recommended to check ppls.lua if you haven't already.
+The comments will tell you what you can add in there.
+
+With that, let's get to the details of what each function in each structure does :]
+ppls:
+    global_variables:
+        WIDTH (the width of the level)
+        HEIGHT (the height of the level)
+        SPAWN_X (the x position where the ship will spawn)
+        SPAWN_Y (the y position where the ship will spawn)
+        CAM_DIST (the distance from the ship to the camera)
+        etc.
+
+    documentation
+        this file. Contains all info you need to use PPLS.
+
+    pewpew
+        contains all functions and explanations to use pewpew.
+
+    structures:
+        Amath:
+            abs(x) 
+            returns the absolute value of x
+
+            floor(x) 
+            floors and returns the x
+
+            ceil(x) 
+            ceils and returns the x
+
+            round(x) 
+            rounds and returns the x
+
+            normalize(x,y)
+            returns the normalized version of x and y
+            only fixedpoints can be used here
+
+            random(min,max) 
+            returns a random value within minimum and maximum space
+
+            lerp(a,b,t) 
+            gives the inbetween of point a to point b based on t which is always from 0 to 1
+
+            invLerp(a,b,v) 
+            gives t based on v
+
+            remap(iMin,iMax,oMin,oMax,iv) 
+            returns the output value(ov) based on the inputs and the iv
+        Entity:
+            CustomEntities{}
+            a table that contains tables that contain the id and the type
+
+            CustomType{}
+            a table that contains all custom type enums
+
+            new_type(name)
+            creates a new type by the name of the given name and adds it to ppls.Entity.CustomType{}
+            the given name must be a string
+
+            new_entity(x,y,mesh_info{})
+            creates an entity and returns the id
+            mesh_info is a table, which would look like this: {mesh_path,index}
+
+            destroy_entity(id,duration)
+            destroys the entity in the time of duration
+
+            get_entity_type(id)
+            gets the entity type from the id
+
+            get_entity_count(typee)
+            returns the number of entities that are of the given type
+
+            apply_entity_callbacks(wecallback,pcallback,wacallback)
+            applies all pewpew callbacks, you can set a nil value to the one you dont want to be applied
+            wecallback is for the weapon collision callback
+            pcallback is for the player collision callback 
+            wacallback is for the wall collision callback
+        General:
+            player_ships{}
+            an array of the current ship ids
+
+            create_player(x,y)
+            creates the player ship
+
+            spawn()
+            gives random spawn coordinates
+
+            parseSound(link)
+            returns a table of sound properties from the link
+
+            make_color(r,g,b,a)
+            returns a color based on the RGBA values 
+
+            color_to_string(color)
+            returns a stringified color so that it's usable in strings
+        Mesh:
+            new_mesh()
+            returns an empty mesh
+
+            add_line_to_mesh(mesh,vertexes{},colors{},close_loop)
+            adds a colored line to the mesh and closes the loop if true 
+
+            add_poly1(mesh, center{}, sides, radius, startangle, color)
+            creates a flat polygon
+
+            add_poly2(mesh, center{}, sides, radius, height, startangle, color)
+            creates a cylinder
+            
+            add_star(mesh, center{}, radius, startangle, color)
+            creates a star 
+
+            add_cube(mesh, center{}, side_length, color)
+            creates a cube 
+
+            add_rectangle(mesh,center{},x_radius,y_radius,color)
+            creates a rectangle
+
+            add_grid(mesh,x{},y{},color)
+            creates a grid
+            x is a table, which would look like this: {start_x,end_x,increment_x}
+            same applies for y 
+
+            add_fading_outlines(mesh,center{},xradius,yradius,zstart,zend,amount,alpha{},color{})
+            creates a bunch of outlines that fade as they reach zend
+            alpha is a table, which would look like this: {alpha_start,alpha_end}
+            color is a table, which would look like this: {r,g,b}
+
+That's it!
